@@ -4,57 +4,61 @@ using System.Text;
 
 public class Robot
 {
-
-    // Possibilité de random sur une regex ?
-
-    public Random random = new Random();
-    public HashSet<string> usedNames = new HashSet<string>();
+    private Random _random = new Random();
+    private static HashSet<string> UsedNames = new HashSet<string>();
     public string Name { get; private set; } = null;
 
     public Robot()
     {
-        UpdateName();
+        SetName();
     }
 
-    public string BeginningName()
+    private string GetBeginningName()
     {
-        string beginningName = new StringBuilder()
-                            .Append(((char)('A' + random.Next(0, 25))).ToString())
-                            .Append(((char)('A' + random.Next(0, 25))).ToString())
-                            .ToString();
+        string beginningName;
+
+        beginningName = new StringBuilder()
+                    .Append(((char)('A' + _random.Next(0, 25))).ToString())
+                    .Append(((char)('A' + _random.Next(0, 25))).ToString())
+                    .ToString();
 
         return beginningName;
     }
 
-    public string EndingName()
+    private string GetEndingName()
     {
-        string endingName = new StringBuilder()
-                            .Append(random.Next(0, 9).ToString())
-                            .Append(random.Next(0, 9).ToString())
-                            .Append(random.Next(0, 9).ToString())
-                            .ToString();
+        string endingName;
+
+        endingName = new StringBuilder()
+                    .Append(_random.Next(0, 9).ToString())
+                    .Append(_random.Next(0, 9).ToString())
+                    .Append(_random.Next(0, 9).ToString())
+                    .ToString();
 
         return endingName;
     }
 
-    public void UpdateName()
+    public void Reset()
     {
-        var name = new StringBuilder().Append(BeginningName()).Append(EndingName()).ToString();
+        SetName();
+    }
 
-        while (usedNames.Contains(name))
+    private void SetName()
+    {
+        var name = new StringBuilder()
+                .Append(GetBeginningName())
+                .Append(GetEndingName())
+                .ToString();
+
+        while (UsedNames.Contains(name))
         {
             name = new StringBuilder()
-                .Append(BeginningName())
-                .Append(EndingName())
+                .Append(GetBeginningName())
+                .Append(GetEndingName())
                 .ToString();
         }
 
         Name = name;
-        usedNames.Add(Name);
-    }
-
-    public void Reset()
-    {
-        UpdateName();
+        UsedNames.Add(Name);
     }
 }
